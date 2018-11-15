@@ -1,0 +1,30 @@
+{
+    "name": "kafka-healthcheck",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "Anatoly Zelenin",
+    "license": "MIT",
+    "dependencies": {
+        "debug": "^4.0.1",
+        "express": "^4.16.3",
+        "node-rdkafka": "^2.4.2",
+        "wait-for-kafka": "^1.0.3"
+    },
+    "scripts": {
+        "start": "./node_modules/.bin/ts-node ./src/index.ts",
+        "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts"
+    },
+    "devDependencies": {
+        "@types/express": "^4.16.0",
+        "@types/node": "^10.9.4",
+        "nodemon": "^1.18.4",
+        "ts-node": "^7.0.1",
+        "typescript": "^3.0.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/azapps/kafka-healthcheck.git"
+    },
+    "homepage": "https://github.com/azapps/kafka-healthcheck.git",
+    "keywords": ["Kafka", "Healthcheck"]
+}
