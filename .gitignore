@@ -41,3 +41,4 @@ jspm_packages/
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
+dist

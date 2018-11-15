@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 import kafka_utils from './kafka_utils';
 import express from 'express';
 import {performance} from 'perf_hooks';
