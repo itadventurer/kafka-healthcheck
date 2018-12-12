@@ -1,6 +1,6 @@
 {
     "name": "kafka-healthcheck",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Checks the health of a Kafka Cluster by sending a roundtrip message",
     "main": "dist/kafka-healthcheck.js",
     "author": "Anatoly Zelenin",
