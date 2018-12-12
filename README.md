@@ -11,39 +11,64 @@ tests a roundtrip on each request.
 npm install -g kafka-healthcheck
 ```
 
-## Getting Started
+## Usage
 
-You do not need to create a topic. Kafka Healthcheck does it for you.
+Kafka Healthcheck can be used as a CLI tool or as a server which
+listens for HTTP requests and checks the roundtrip time on each HTTP
+request.
 
+```sh
+# Basic Configuration
+export KAFKA_BOOTSTRAP_SERVERS=localhost:9092
+export HEALTHCHECK_TOPIC=healthcheck
+```
+
+### Ensure that the healthcheck topic is created (optional)
+
+The `$HEALTHCHECK_TOPIC ` must exist before kafka-healthcheck is
+started. If you need to create the topic programmatically, you can use
+[wait-for-kafka](https://github.com/azapps/wait-for-kafka/):
+
+```sh
+# Optional!
+npm install -g wait-for-kafka
+export DEBUG="showcase:*" # optional
+export REPLICATION_FACTOR=3 # recommended: number of brokers
+export ENSURE_KAFKA_TOPICS='[{"topic": "'$HEALTHCHECK_TOPIC'","partitions": 1, "replicationFactor": '$REPLICATION_FACTOR'}]'
+wait-for-kafka
+```
 ### Standalone
 
 ```sh
-export KAFKA_URL=localhost:9092
-export HEALTHCHECK_TOPIC=healthcheck
-export REPLICATION_FACTOR=1
-export DEBUG="wait-for-kafka*|kafka-healthcheck*"
 unset HTTP_PORT
+export DEBUG="kafka-healthcheck*" # Optional
 kafka-healthcheck
 ```
 
 ### As a server
 
 ```sh
-export KAFKA_URL=localhost:9092
-export HEALTHCHECK_TOPIC=healthcheck
-export REPLICATION_FACTOR=1
-export DEBUG="wait-for-kafka*|kafka-healthcheck*"
 export HTTP_PORT=8080
+export DEBUG="kafka-healthcheck*" # Optional
 kafka-healthcheck
+curl http://localhost:8080/
 ```
 
 ## Configuration
 
-* `KAFKA_URL`: URL of your Kafka Cluster
+* `KAFKA_BOOTSTRAP_SERVERS`: URL of your Kafka Cluster
 * `HEALTHCHECK_TOPIC`: Optional. Default: `healthcheck`
-* `REPLICATION_FACTOR`: When creating the topic, what should be the
-  replication factor?
-* `DEBUG`: `wait-for-kafka*|kafka-healthcheck*` ← will show all relevant messages. set to
-  `*` for all debug messages
+* `DEBUG`: `kafka-healthcheck*` ← will show all relevant messages. set
+  to `*` for all debug messages
 * `HTTP_PORT`: (optional) If set, the http server will be started on
   that port.
+
+### Additional Environment Variables
+
+`kafka-healthcheck` supports all configuration parameters of
+librdkafka as described in the [project
+documentation](https://github.com/edenhill/librdkafka/blob/0.11.1.x/CONFIGURATION.md).
+
+They are set via environment variables prefixed by `KAFKA_`. For
+example the parameter `client.id` can be set by the `KAFKA_CLIENT_ID`
+environment variable.

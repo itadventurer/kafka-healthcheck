@@ -1,12 +1,25 @@
 import Kafka from 'node-rdkafka';
 
-function create_consumer(kafka_host, group_id, topics) {
+function get_env_config() {
+    var additional_config = {};
+
+    for (const key in process.env) {
+        if(key.startsWith("KAFKA_")) {
+            const value = process.env[key];
+            const libKey = key.substring(6).toLowerCase().replace(/_/g,".");
+            additional_config[libKey] = value;
+        }
+    }
+    return additional_config;
+}
+
+function create_consumer(group_id, topics) {
+    const additional_config = get_env_config();
     const globalConfig = {
         'group.id': group_id,
-        'metadata.broker.list': kafka_host,
         'fetch.wait.max.ms': 10,
-        'fetch.min.bytes': 1,
-        'fetch.error.backoff.ms': 10
+        'fetch.error.backoff.ms': 10,
+        ...additional_config
     };
     const topicConfig = {};
 
@@ -27,19 +40,25 @@ function consume_messages(consumer, on_success, on_error=null) {
     });
 }
 
-async function create_producer(kafka_host, partitioner_type) {
+async function create_producer(partitioner_type) {
     return new Promise((resolve,reject) => {
-        var producer = new Kafka.Producer({
-            'metadata.broker.list': kafka_host,
-            'queue.buffering.max.ms': 0,
+        const additional_config = get_env_config();
+
+        const global_config = {
+            'metadata.broker.list': additional_config['bootstrap.servers'],
+            'queue.buffering.max.ms': 5,
             'compression.codec': 'gzip',
             'retry.backoff.ms': 200,
             'message.send.max.retries': 10,
             'socket.keepalive.enable': true,
             'queue.buffering.max.messages': 1000,
             'batch.num.messages': 1000,
-            'dr_cb': true
-        },{});
+            'dr_cb': true,
+            ...additional_config
+        }
+        delete global_config['bootstrap.servers'];
+        console.log(global_config);
+        var producer = new Kafka.Producer(global_config,{});
         producer.connect();
 
         // Any errors we encounter, including connection errors
