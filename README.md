@@ -30,6 +30,7 @@ started. If you need to create the topic programmatically, you can use
 [wait-for-kafka](https://github.com/azapps/wait-for-kafka/):
 
 ```sh
+# Do not forget the basic configuration!
 # Optional!
 npm install -g wait-for-kafka
 export DEBUG="showcase:*" # optional
@@ -40,6 +41,7 @@ wait-for-kafka
 ### Standalone
 
 ```sh
+# Do not forget the basic configuration!
 unset HTTP_PORT
 export DEBUG="kafka-healthcheck*" # Optional
 kafka-healthcheck

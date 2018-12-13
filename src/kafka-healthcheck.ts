@@ -19,8 +19,11 @@ async function consume_event(event) {
 }
 
 async function init(healthcheck_topic='healthcheck') {
-    const consumer = kafka_utils.create_consumer('healthcheck.' + process.env.HOSTNAME,
-                                                 [healthcheck_topic]);
+    const consumer = kafka_utils.create_consumer('healthcheck', [healthcheck_topic], {
+        'fetch.wait.max.ms': 5,
+        'fetch.error.backoff.ms': 5,
+        'enable.auto.commit': false
+    });
     kafka_utils.consume_messages(consumer, consume_event);
     debug("Started listening on topics", healthcheck_topic);
 

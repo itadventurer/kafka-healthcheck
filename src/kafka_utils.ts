@@ -13,13 +13,14 @@ function get_env_config() {
     return additional_config;
 }
 
-function create_consumer(group_id, topics) {
+function create_consumer(group_id, topics, config={}) {
     const additional_config = get_env_config();
     const globalConfig = {
         'group.id': group_id,
         'fetch.wait.max.ms': 10,
         'fetch.error.backoff.ms': 10,
-        ...additional_config
+        ...additional_config,
+        ...config
     };
     const topicConfig = {};
 
@@ -40,12 +41,11 @@ function consume_messages(consumer, on_success, on_error=null) {
     });
 }
 
-async function create_producer(partitioner_type) {
+async function create_producer(partitioner_type, config={}) {
     return new Promise((resolve,reject) => {
         const additional_config = get_env_config();
 
         const global_config = {
-            'metadata.broker.list': additional_config['bootstrap.servers'],
             'queue.buffering.max.ms': 5,
             'compression.codec': 'gzip',
             'retry.backoff.ms': 200,
@@ -54,9 +54,9 @@ async function create_producer(partitioner_type) {
             'queue.buffering.max.messages': 1000,
             'batch.num.messages': 1000,
             'dr_cb': true,
-            ...additional_config
+            ...additional_config,
+            ...config
         }
-        delete global_config['bootstrap.servers'];
         console.log(global_config);
         var producer = new Kafka.Producer(global_config,{});
         producer.connect();
