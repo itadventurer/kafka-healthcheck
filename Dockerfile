@@ -29,4 +29,5 @@ RUN yarn
 
 COPY src /usr/local/app/src/
 
-CMD npm start
+RUN yarn build
+ENTRYPOINT ["node", "./dist/kafka-healthcheck.js"]
