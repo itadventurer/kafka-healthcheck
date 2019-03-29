@@ -74,3 +74,7 @@ documentation](https://github.com/edenhill/librdkafka/blob/0.11.1.x/CONFIGURATIO
 They are set via environment variables prefixed by `KAFKA_`. For
 example the parameter `client.id` can be set by the `KAFKA_CLIENT_ID`
 environment variable.
+
+# License
+
+kafka-healthcheck is licensed under the [Apache License](./LICENSE), Version 2.0
