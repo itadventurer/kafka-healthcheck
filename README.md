@@ -21,6 +21,7 @@ request.
 # Basic Configuration
 export KAFKA_BOOTSTRAP_SERVERS=localhost:9092
 export HEALTHCHECK_TOPIC=healthcheck
+export HEALTHCHECK_GROUP=healthcheck
 ```
 
 ### Ensure that the healthcheck topic is created (optional)
@@ -60,6 +61,7 @@ curl http://localhost:8080/
 
 * `KAFKA_BOOTSTRAP_SERVERS`: URL of your Kafka Cluster
 * `HEALTHCHECK_TOPIC`: Optional. Default: `healthcheck`
+* `HEALTHCHECK_GROUP`: Optional. Default: `healthcheck`
 * `DEBUG`: `kafka-healthcheck*` ← will show all relevant messages. set
   to `*` for all debug messages
 * `HTTP_PORT`: (optional) If set, the http server will be started on

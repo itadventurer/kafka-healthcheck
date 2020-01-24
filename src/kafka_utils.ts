@@ -13,7 +13,7 @@ function get_env_config() {
     return additional_config;
 }
 
-function create_consumer(group_id, topics, config={}) {
+function create_consumer(group_id: String, topics: String[], config={}) {
     const additional_config = get_env_config();
     const globalConfig = {
         'group.id': group_id,
