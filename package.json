@@ -6,9 +6,9 @@
     "author": "Anatoly Zelenin",
     "license": "MIT",
     "dependencies": {
-        "debug": "^4.0.1",
-        "express": "^4.16.3",
-        "node-rdkafka": "^2.4.2"
+        "debug": "^4.1.1",
+        "express": "^4.17.1",
+        "node-rdkafka": "^2.7.4"
     },
     "scripts": {
         "start": "./node_modules/.bin/ts-node ./src/kafka-healthcheck.ts",
