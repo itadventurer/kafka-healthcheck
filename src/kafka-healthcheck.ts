@@ -57,7 +57,10 @@ async function start_server(port, healthcheck_group: String, healthcheck_topic: 
 
     app.get('/metrics', async function(req, res) {
         const duration = await test_roundtrip(producefn);
-        res.send(`kafka_healthcheck_roundtrip_duration ${duration}`);
+        res.send(
+`# HELP kafka_healthcheck_roundtrip_duration The duration of a healtcheck roundtrip. Measured at the time of the HTTP request
+# TYPE kafka_healthcheck_roundtrip_duration gauge
+kafka_healthcheck_roundtrip_duration ${duration}`);
     });
 
     app.listen(port, () => debug(`Example app listening on port ${port}! Endpoints: / /metrics`));
